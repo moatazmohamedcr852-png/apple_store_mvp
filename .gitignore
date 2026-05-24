@@ -1,0 +1,35 @@
+# Dependency directories
+node_modules/
+BE/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+BE/.env
+BE/.env.local
+
+# Build output
+BE/dist/
+dist/
+.vercel/
+
+# Local image assets (served from Cloudinary in production)
+uploads/
+custom/
+استيكر/
+كوستر/
+
+# Utility scripts (not needed in production)
+upload_products.py
+delete_products.py
+upload-to-prod.js
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Misc
+package-lock.json

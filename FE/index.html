@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple-Store - Premium Stickers Shop</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+
+            <!-- TOGGLER -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- LOGO -->
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+                <img src="assets/logo.jpg" alt="Apple Store" class="logo-img">
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-0 align-items-center elegant-nav">
+
+                    <li class="nav-item dropdown d-none" id="userMenu">
+                        <a class="nav-link dropdown-toggle fw-semibold user-box" href="#" role="button"
+                            data-bs-toggle="dropdown">
+                            <span id="userName"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button class="dropdown-item text-danger" id="logoutBtn">Logout</button>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/category.html?cat=stickers">Stickers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/category.html?cat=sticker sheets">Sticker
+                            Sheets</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="pages/category.html?cat=laptop stickers">Laptop
+                            Stickers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/category.html?cat=visa stickers">Visa
+                            Stickers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/category.html?cat=mugs">Mugs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/category.html?cat=medals">Medlas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/category.html?cat=coaster">Coaster</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link smart-contact-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- ICONS -->
+            <div class="icon-group d-flex align-items-center">
+                <!-- User icon (logged out) -->
+                <a href="#" class="nav-icon me-2" id="userIcon" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+
+                <a href="#" class="nav-icon me-2" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+
+                <a href="#" class="nav-icon btn btn-outline-success position-relative" data-bs-toggle="modal"
+                    data-bs-target="#cartModal">
+                    <i class="bi bi-cart3"></i>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">0</span>
+                </a>
+            </div>
+
+    </nav>
+
+
+
+
+    <!-- Hero Section -->
+    <!-- First Section (Green Banner) -->
+    <section id="first-section" class="hero-wrapper">
+        <div class="hero-shapes">
+            <div class="shape-1"></div>
+            <div class="shape-2"></div>
+            <div class="shape-3"></div>
+        </div>
+
+        <div class="hero-content glass-card">
+            <span class="hero-subtitle">•New Collection 2026</span>
+            <h1 class="hero-title">Premium Stickers</h1>
+
+            <div class="hero-features">
+                <span>•High quality</span>
+                <span>•Unique designs</span>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Best Seller This Week Section -->
+    <section id="bestSeller" class="py-5 bg-light">
+        <div class="container">
+
+            <!-- Section Title -->
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Best Seller This Week</h2>
+                <p class="text-muted">Our most popular mugs loved by customers</p>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="row g-4" id="bestSellerContainer">
+                <!-- Products will be injected here by JavaScript -->
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Shop By Category Section -->
+    <section id="shopByCategory" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold hero-title">Shop by Category</h2>
+                <p class="text-muted">Explore our stickers, sheets, mugs, and more</p>
+            </div>
+            <div class="row g-4" id="categorySquaresContainer">
+                <div class="col-6 col-md-3">
+                    <a href="pages/category.html?cat=stickers" class="text-decoration-none category-link"
+                        data-cat="stickers">
+                        <div class="category-card text-center p-3 border rounded hover-shadow">
+                            <img src="assets/Copilot_20260122_175027.png" alt="Stickers" class="img-fluid mb-2 rounded">
+                            <h5 class="mb-0 text-dark">Stickers</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="pages/category.html?cat=sticker sheets" class="text-decoration-none category-link"
+                        data-cat="sticker sheets">
+                        <div class="category-card text-center p-3 border rounded hover-shadow">
+                            <img src="assets/Copilot_20260122_175027.png" alt="Stickers Sheets"
+                                class="img-fluid mb-2 rounded">
+                            <h5 class="mb-0 text-dark">Sticker Sheets</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="pages/category.html?cat=visa stickers" class="text-decoration-none category-link"
+                        data-cat="visa stickers">
+                        <div class="category-card text-center p-3 border rounded hover-shadow">
+                            <img src="assets/Copilot_20260122_175027.png" alt="Stickers Sheets"
+                                class="img-fluid mb-2 rounded">
+                            <h5 class="mb-0 text-dark">Visa Stickers</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="pages/category.html?cat=mugs" class="text-decoration-none category-link" data-cat="mugs">
+                        <div class="category-card text-center p-3 border rounded hover-shadow">
+                            <img src="assets/Copilot_20260122_175027.png" alt="mugs" class="img-fluid mb-2 rounded">
+                            <h5 class="mb-0 text-dark">Mugs</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="pages/category.html?cat=medals" class="text-decoration-none category-link"
+                        data-cat="medals">
+                        <div class="category-card text-center p-3 border rounded hover-shadow">
+                            <img src="assets/Copilot_20260122_175027.png" alt="medals" class="img-fluid mb-2 rounded">
+                            <h5 class="mb-0 text-dark">Medals</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="pages/category.html?cat=coaster" class="text-decoration-none category-link"
+                        data-cat="coaster">
+                        <div class="category-card text-center p-3 border rounded hover-shadow">
+                            <img src="assets/Copilot_20260122_175027.png" alt="medals" class="img-fluid mb-2 rounded">
+                            <h5 class="mb-0 text-dark">Coasters</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content search-modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="modal-title text-center mb-4" id="searchModalLabel">Search Products</h3>
+                    <div class="search-container">
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control search-input" id="searchInput"
+                                placeholder="Search for stickers, products..." autofocus>
+                            <button class="btn btn-primary" type="button" id="searchButton">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                        <div id="searchResults" class="search-results mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content login-modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="login-icon-wrapper mb-3">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <h3 class="modal-title" id="loginModalLabel">Welcome Back</h3>
+                        <p class="text-muted">Sign in to your account to continue</p>
+                    </div>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label fw-semibold">Email Address</label>
+                            <input type="email" class="form-control form-control-lg" id="loginEmail"
+                                placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label fw-semibold">Password</label>
+                            <input type="password" class="form-control form-control-lg" id="loginPassword"
+                                placeholder="Enter your password" required>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="#" class="text-decoration-none" data-bs-dismiss="modal" data-bs-toggle="modal"
+                                data-bs-target="#forgotPasswordModal">
+                                Forgot password?
+                            </a>
+
+                        </div>
+                        <p id="Login-state"></p>
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                        </button>
+                        <div class="text-center">
+                            <p class="text-muted mb-0">Don't have an account?
+                                <a href="#" class="text-decoration-none fw-semibold" data-bs-dismiss="modal"
+                                    data-bs-toggle="modal" data-bs-target="#signupModal">
+                                    Sign up
+                                </a>
+
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="loginToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <strong class="me-auto">Login Successful</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                You have successfully logged in!
+            </div>
+        </div>
+    </div>
+    <!-- Sign Up Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content login-modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="login-icon-wrapper mb-3">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <h3>Create Account</h3>
+                        <p class="text-muted">Sign up to get started</p>
+                    </div>
+
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Name</label>
+                            <input type="text" class="form-control form-control-lg" id="signupName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control form-control-lg" id="signupEmail" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Password</label>
+                            <input type="password" class="form-control form-control-lg" id="signupPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Phone Number</label>
+                            <input type="phone" class="form-control form-control-lg" id="signupPhone" required>
+                        </div>
+
+                        <button class="btn btn-success btn-lg w-100">
+                            Create Account
+                        </button>
+                        <p id="Register-state"></p>
+                        <div class="text-center mt-3">
+                            <p class="text-muted">
+                                Already have an account?
+                                <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                    Sign in
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Forgot Password / OTP Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content login-modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Reset Password</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <form id="otpForm">
+
+                        <!-- STEP 1: Email -->
+                        <div id="emailStep">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control mb-3" id="otpEmail" required>
+                            <button type="button" class="btn btn-primary w-100">Send OTP</button>
+                        </div>
+
+                        <!-- STEP 2: OTP -->
+                        <div id="otpStep" class="d-none">
+                            <label class="form-label fw-semibold">Enter OTP</label>
+                            <input type="text" class="form-control mb-3" id="otpCode" required>
+                            <button type="button" class="btn btn-success w-100">Verify OTP</button>
+                        </div>
+                        <!-- STEP 3: Change Password -->
+                        <div id="changePasswordStep" class="d-none">
+                            <label class="form-label fw-semibold">New Password</label>
+                            <input type="password" class="form-control mb-3" id="newPassword" required>
+
+                            <label class="form-label fw-semibold">Confirm Password</label>
+                            <input type="password" class="form-control mb-3" id="confirmPassword" required>
+
+                            <button type="button" class="btn btn-success w-100" id="changePasswordBtn">Change
+                                Password</button>
+                        </div>
+
+                    </form>
+
+                    <p id="otpState" class="text mt-2"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Product Options Modal -->
+    <div class="modal fade" id="productOptionsModal" tabindex="-1" aria-labelledby="productOptionsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+
+                        <!-- Product Details -->
+                        <div class="col-md-12">
+                            <h3 id="productOptionsModalLabel">Product Name</h3>
+                            <p class="text-muted" id="productOptionsCategory">Category</p>
+                            <p class="text-muted" id="plusOption">(For special size contact us)</p>
+                            <div class="mb-4">
+                                <span id="productOptionsPrice" class="fs-4">$0.00</span>
+                            </div>
+
+                            <form id="productOptionsForm">
+                                <input type="hidden" id="productOptionsName" value="">
+                                <input type="hidden" id="productOptionsBasePrice" value="">
+                                <input type="hidden" id="productOptionsCategoryInput" value="">
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="productSize">Size</label>
+                                    <select class="form-select form-select-sm" id="productSize" required>
+                                        <option value="">Choose an option</option>
+                                        <option value="small">Small (5cm*5cm)</option>
+                                        <option value="medium">Medium (10cm*10cm)</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="productQuantity">Quantity</label>
+                                    <div class="input-group input-group-lg">
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            id="decreaseQty">-</button>
+                                        <input type="number" id="productQuantity" class="form-control text-center"
+                                            value="1" min="1" max="99">
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            id="increaseQty">+</button>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content cart-modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h3 class="modal-title" id="cartModalLabel">Shopping Cart</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div id="cartItemsContainer">
+                        <!-- Cart items will be dynamically inserted here -->
+                        <div class="empty-cart text-center py-5">
+                            <i class="bi bi-cart-x" style="font-size: 4rem; color: #ccc;"></i>
+                            <p class="text-muted mt-3">Your cart is empty</p>
+                            <a href="#shop" class="btn btn-primary mt-2" data-bs-dismiss="modal">Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div id="cartSummary" class="cart-summary mt-4 pt-4 border-top" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span id="cartSubtotal">$0.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Shipping:</span>
+                                    <span>Calculated at checkout</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong>Total:</strong>
+                                    <strong class="text-primary fs-5" id="cartTotal">$0.00</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <button class="btn btn-primary btn-lg w-100 mb-2" id="checkoutButton">
+                                    Checkout
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm w-100" data-bs-dismiss="modal">
+                                    Continue Shopping
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <strong class="me-auto">Added to Cart</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Item has been added to your cart!
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="footer py-3" id="contact">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+
+            <!-- Contact Info -->
+            <div class="footer-contact d-flex flex-wrap align-items-center gap-3 mb-2 mb-md-0">
+                <div class="footer-item d-flex align-items-center gap-1">
+                    <a href="https://maps.app.goo.gl/Q8iFqu5bacgHWEP28" target="_parent"
+                        style="color: #76b852;text-decoration: none;"><i class="fa-solid fa-location-crosshairs"></i>
+                        <span> السكاكيني، حي الظاهر، محافظة القاهرة</span>
+                    </a>
+                </div>
+                <div class="footer-item d-flex align-items-center gap-1">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>010 68458049</span>
+                </div>
+                <div class="footer-item d-flex align-items-center gap-1">
+                    <i class="fa-solid fa-at"></i>
+                    <span>info@apple-store.com</span>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="footer-social d-flex gap-3">
+                <a href="https://www.facebook.com/share/1DZSAA1qbx/?mibextid=wwXIfr" target="_blank"
+                    aria-label="Facebook">
+                    <i class="fa-brands fa-square-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/apple_store_el_daher?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                    target="_blank" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Footer bottom -->
+        <div class="text-center text-muted mt-2" style="font-size:0.8rem;">
+            &copy; 2026 Apple Store. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/authentication.js"></script>
+
+</body>
+
+</html>
