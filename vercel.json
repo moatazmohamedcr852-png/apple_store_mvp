@@ -1,17 +1,10 @@
 {
   "version": 2,
+  "outputDirectory": "FE",
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api/index.ts"
-    },
-    {
-      "source": "/uploads/(.*)",
-      "destination": "/uploads/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/FE/$1"
     }
   ]
 }
