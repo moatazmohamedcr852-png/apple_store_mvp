@@ -6,11 +6,21 @@ import transactionController from './modules/transaction/transaction.controller'
 import productController from './modules/product/product.controller';
 import adminController from './modules/admin/admin.controller';
 import { AppError } from './utils/common/Error';
+import { devConfig } from './config/dev.env';
 import path from 'path';
 
 export function bootstrap(app: Express, express: any) {
     app.use(express.json());
-    app.use(cors());
+    app.use(cors({
+        origin: devConfig.CLIENT_URL === '*' ? '*' : devConfig.CLIENT_URL.split(','),
+        credentials: true,
+    }));
+
+    // Health check for Render keep-alive
+    app.get('/health', (req: Request, res: Response) => {
+        res.status(200).send('OK');
+    });
+
     // Serve the uploads directory statically
     app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
@@ -22,7 +32,7 @@ export function bootstrap(app: Express, express: any) {
         if (!error) {
             next();
         }
-        const isProduction = process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+        const isProduction = process.env.NODE_ENV === 'production';
         res.status(error.statusCode || 500).json({
             message: error.message,
             errorDetails: error.errorDetails,

@@ -4,7 +4,9 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "start:dev": "concurrently \"tsc --watch\" \"node --watch ./dist/index.js\""
+    "start:dev": "concurrently \"tsc --watch\" \"node --watch ./dist/index.js\"",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
