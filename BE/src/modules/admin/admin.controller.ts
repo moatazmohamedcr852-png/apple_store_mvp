@@ -1,6 +1,7 @@
 import { Router } from "express";
 import adminService from "./admin.service";
 import { adminAuth } from "./admin.middleware";
+import { upload } from "../../config/multer";
 
 const router = Router();
 
@@ -8,6 +9,7 @@ const router = Router();
 router.post("/login", adminService.login);
 
 // Protected routes — require admin JWT
+router.post("/product", adminAuth, upload.single("photo"), adminService.createProduct);
 router.put("/product/:id", adminAuth, adminService.updateProduct);
 router.delete("/product/:id", adminAuth, adminService.deleteProduct);
 router.get("/orders", adminAuth, adminService.getOrders);

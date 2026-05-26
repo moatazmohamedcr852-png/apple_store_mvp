@@ -5,6 +5,7 @@ import { ProductRepository } from "../../models/product/product.repository";
 import { TransactionRepository } from "../../models/transaction/transaction.repository";
 import { OfferRepository } from "../../models/offer/offer.repository";
 import { OfferHelper } from "./offer.helpers";
+import cloudinary from "../../config/cloudinary";
 
 class AdminService {
     private productRepository = new ProductRepository();
@@ -42,6 +43,41 @@ class AdminService {
     };
 
     // ========== PRODUCTS ==========
+    public createProduct = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { name, price, stock, category, type, description } = req.body;
+            const photo = req.file;
+
+            if (!name || price === undefined || !category || !type || !photo) {
+                return res.status(400).json({ success: false, message: "Name, price, category, type, and image are required" });
+            }
+
+            const originalPrice = Number(price);
+            const { secure_url } = await cloudinary.uploader.upload(photo.path, {
+                folder: `apple-store/${category}/${type}`
+            });
+
+            const product = await this.productRepository.create({
+                name,
+                price: await OfferHelper.calculatePriceWithActiveOffers(category, originalPrice),
+                originalPrice,
+                stock: Number(stock || 0),
+                category,
+                type,
+                image: secure_url,
+                description: description || "",
+            } as any);
+
+            return res.status(201).json({
+                success: true,
+                message: "Product created successfully",
+                data: product,
+            });
+        } catch (err) {
+            next(err);
+        }
+    };
+
     public updateProduct = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id as string;

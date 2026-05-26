@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAdminProducts, getOrders, getOffers, deleteProduct, updateProduct, createOffer, deleteOffer } from '../services/api';
-import { API_BASE } from '../config/api';
+import { getAdminProducts, getOrders, getOffers, createProduct, deleteProduct, updateProduct, createOffer, deleteOffer } from '../services/api';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('products');
@@ -18,9 +17,10 @@ const AdminDashboard = () => {
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editTarget, setEditTarget] = useState({ id: null, name: '', price: 0, stock: 0, category: '' });
+  const [editTarget, setEditTarget] = useState({ id: null, name: '', price: 0, stock: 0, category: '', image: '' });
 
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [dashboardError, setDashboardError] = useState('');
 
   // Offer Form
   const [offerForm, setOfferForm] = useState({ title: '', category: '', discountType: 'percentage', discountValue: '', startDate: '', expiryDate: '' });
@@ -35,6 +35,8 @@ const AdminDashboard = () => {
     }
 
     loadProducts();
+    loadOrders();
+    loadOffers();
   }, []);
 
   const triggerToast = (msg, type = 'success') => {
@@ -58,18 +60,54 @@ const AdminDashboard = () => {
   };
 
   const loadProducts = async () => {
-    const res = await getAdminProducts();
-    if (res?.success) setProducts(res.data);
+    try {
+      const res = await getAdminProducts();
+      if (res?.success && Array.isArray(res.data)) {
+        setProducts(res.data);
+        setDashboardError('');
+      } else {
+        setProducts([]);
+        setDashboardError(res?.message || 'Could not load products');
+      }
+    } catch {
+      setProducts([]);
+      setDashboardError('Could not load products');
+    }
   };
 
   const loadOrders = async () => {
-    const res = await getOrders();
-    if (res?.success) setOrders(res.data);
+    try {
+      const res = await getOrders();
+      if (res?.success && Array.isArray(res.data)) setOrders(res.data);
+    } catch {
+      triggerToast('Could not load orders', 'error');
+    }
   };
 
   const loadOffers = async () => {
-    const res = await getOffers();
-    if (res?.success) setOffers(res.data);
+    try {
+      const res = await getOffers();
+      if (res?.success && Array.isArray(res.data)) setOffers(res.data);
+    } catch {
+      triggerToast('Could not load offers', 'error');
+    }
+  };
+
+  const submitProduct = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.set('name', formData.get('name')?.trim() || '');
+    formData.set('description', formData.get('description')?.trim() || '');
+
+    const res = await createProduct(formData);
+    if (res?.success) {
+      triggerToast('Product added successfully');
+      e.currentTarget.reset();
+      setShowAddProduct(false);
+      loadProducts();
+    } else {
+      triggerToast(res?.message || 'Failed to add product', 'error');
+    }
   };
 
   // --- Deletion ---
@@ -89,7 +127,7 @@ const AdminDashboard = () => {
 
   // --- Editing ---
   const attemptEdit = (p) => {
-    setEditTarget({ id: p.id || p._id, name: p.name, price: p.originalPrice ?? p.price, stock: p.stock ?? 0, category: p.category });
+    setEditTarget({ id: p.id || p._id, name: p.name, price: p.originalPrice ?? p.price, stock: p.stock ?? 0, category: p.category, image: p.image || '' });
     setShowEditModal(true);
   };
   const confirmEdit = async () => {
@@ -134,6 +172,15 @@ const AdminDashboard = () => {
         <div className="modal-overlay show" id="editModal" style={{ display: 'flex' }}>
           <div className="modal">
             <h3>✏️ Edit Product</h3>
+            {editTarget.image && (
+              <div style={{ marginBottom: '16px' }}>
+                <img
+                  src={editTarget.image}
+                  alt={editTarget.name}
+                  style={{ width: '100%', maxHeight: '180px', objectFit: 'contain', borderRadius: '12px', border: '1px solid var(--gray-200)', background: 'var(--gray-50)' }}
+                />
+              </div>
+            )}
             <div className="form-group">
               <label htmlFor="editName">Name</label>
               <input type="text" id="editName" value={editTarget.name} onChange={e => setEditTarget({ ...editTarget, name: e.target.value })} />
@@ -200,42 +247,17 @@ const AdminDashboard = () => {
               {showAddProduct && (
                 <div id="addProductCard" style={{ marginBottom: '20px', padding: '20px', background: 'var(--green-50)', borderRadius: '12px', border: '1px solid var(--green-200)' }}>
                   <h3 style={{ marginBottom: '16px', fontSize: '15px', color: 'var(--green-800)' }}>Add New Product</h3>
-                  <form id="addProductForm" onSubmit={async (e) => {
-                    e.preventDefault();
-                    const name = document.getElementById('apName').value;
-                    const priceInput = document.getElementById('apPrice');
-                    const price = priceInput ? Number(priceInput.value) : 20; // Default stickers price
-                    const stock = Number(document.getElementById('apStock').value);
-                    const category = document.getElementById('apCategory').value;
-                    let image = document.getElementById('apImage').value || 'https://via.placeholder.com/300?text=New+Product';
-                    
-                    const res = await fetch(`${API_BASE}/admin/product`, {
-                      method: 'POST',
-                      headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify({ name, price, stock, category, image })
-                    });
-                    
-                    if (res.ok) {
-                      triggerToast('Product added successfully');
-                      document.getElementById('addProductForm').reset();
-                      loadProducts();
-                    } else {
-                      triggerToast('Failed to add product', 'error');
-                    }
-                  }}>
+                  <form id="addProductForm" onSubmit={submitProduct}>
                     <div className="form-row">
-                      <div className="form-group"><label>Name</label><input type="text" id="apName" required placeholder="Product name" className="form-control" /></div>
-                      <div className="form-group" id="apPriceGroup"><label id="apPriceLabel">Price (LE)</label><input type="number" id="apPrice" required placeholder="0.00" step="0.01" className="form-control" /></div>
+                      <div className="form-group"><label>Name</label><input type="text" name="name" required placeholder="Product name" className="form-control" /></div>
+                      <div className="form-group" id="apPriceGroup"><label id="apPriceLabel">Price (LE)</label><input type="number" name="price" required placeholder="0.00" step="0.01" className="form-control" /></div>
                     </div>
                     <div className="form-row">
-                      <div className="form-group"><label>Stock</label><input type="number" id="apStock" placeholder="0" className="form-control" /></div>
+                      <div className="form-group"><label>Stock</label><input type="number" name="stock" placeholder="0" className="form-control" /></div>
                       <div className="form-group">
                         <label>Category</label>
-                        <select id="apCategory" required className="form-control" onChange={(e) => {
-                          const apPrice = document.getElementById('apPrice');
+                        <select name="category" required className="form-control" onChange={(e) => {
+                          const apPrice = e.currentTarget.form.elements.price;
                           if (e.target.value === 'stickers') {
                             apPrice.value = '20';
                             apPrice.readOnly = true;
@@ -256,12 +278,33 @@ const AdminDashboard = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="form-group" style={{ marginTop: '15px' }}><label>Image URL</label><input type="text" id="apImage" placeholder="https://..." className="form-control" /></div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Type</label>
+                        <select name="type" required className="form-control">
+                          <option value="">Select type...</option>
+                          <option value="sport">Sport</option>
+                          <option value="nationalitie">Nationalitie</option>
+                          <option value="cartoon">Cartoon</option>
+                          <option value="marvel">Marvel</option>
+                          <option value="series">Series</option>
+                          <option value="music">Music</option>
+                          <option value="colledge">Colledge</option>
+                          <option value="anime">Anime</option>
+                          <option value="cute">Cute</option>
+                          <option value="memes">Memes</option>
+                          <option value="coat">Coat</option>
+                        </select>
+                      </div>
+                      <div className="form-group"><label>Product Image</label><input type="file" name="photo" required accept="image/*" className="form-control" /></div>
+                    </div>
+                    <div className="form-group" style={{ marginTop: '15px' }}><label>Description</label><input type="text" name="description" placeholder="Optional product description" className="form-control" /></div>
                     <button type="submit" className="btn btn-primary" style={{ marginTop: '15px' }}>Save Product</button>
                   </form>
                 </div>
               )}
 
+              {dashboardError && activeTab === 'products' && <div className="empty-state">{dashboardError}</div>}
               <div className="table-wrap">
                 <table>
                   <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Type</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
@@ -282,6 +325,9 @@ const AdminDashboard = () => {
                         </td>
                       </tr>
                     ))}
+                    {products.length === 0 && !dashboardError && (
+                      <tr><td colSpan="7" className="empty-state">No products found.</td></tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -306,6 +352,9 @@ const AdminDashboard = () => {
                                    <td>{new Date(o.createdAt).toLocaleDateString()}</td>
                                </tr>
                            ))}
+                           {orders.length === 0 && (
+                             <tr><td colSpan="7" className="empty-state">No orders found.</td></tr>
+                           )}
                         </tbody>
                     </table>
                 </div>
@@ -323,10 +372,29 @@ const AdminDashboard = () => {
                        <select value={offerForm.category} onChange={e=>setOfferForm({...offerForm, category: e.target.value})} required>
                            <option value="">Select category</option>
                            <option value="stickers">Stickers</option>
+                           <option value="sticker sheets">Sticker Sheets</option>
+                           <option value="mugs">Mugs</option>
+                           <option value="medals">Medals</option>
+                           <option value="coaster">Coasters</option>
+                           <option value="visa stickers">Visa Stickers</option>
+                           <option value="laptop stickers">Laptop Stickers</option>
                        </select>
                    </div>
                 </div>
-                {/* Form fields identical to vanilla */}
+                <div className="form-row">
+                   <div className="form-group">
+                       <label>Discount Type</label>
+                       <select value={offerForm.discountType} onChange={e=>setOfferForm({...offerForm, discountType: e.target.value})} required>
+                           <option value="percentage">Percentage</option>
+                           <option value="fixed">Fixed Amount</option>
+                       </select>
+                   </div>
+                   <div className="form-group"><label>Discount Value</label><input type="number" min="0" step="0.01" value={offerForm.discountValue} onChange={e=>setOfferForm({...offerForm, discountValue: e.target.value})} required /></div>
+                </div>
+                <div className="form-row">
+                   <div className="form-group"><label>Start Date</label><input type="date" value={offerForm.startDate} onChange={e=>setOfferForm({...offerForm, startDate: e.target.value})} required /></div>
+                   <div className="form-group"><label>Expiry Date</label><input type="date" value={offerForm.expiryDate} onChange={e=>setOfferForm({...offerForm, expiryDate: e.target.value})} required /></div>
+                </div>
                 <button type="submit" className="btn btn-primary">🏷️ Create Offer</button>
               </form>
             </div>
@@ -349,6 +417,9 @@ const AdminDashboard = () => {
                                   </td>
                               </tr>
                           ))}
+                          {offers.length === 0 && (
+                            <tr><td colSpan="5" className="empty-state">No offers found.</td></tr>
+                          )}
                       </tbody>
                   </table>
               </div>

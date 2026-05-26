@@ -17,14 +17,15 @@ export async function apiFetch(path, options = {}) {
 }
 
 export async function adminApiFetch(method, path, body = null) {
+    const isFormData = body instanceof FormData;
     const opts = {
         method,
         headers: {
             'Authorization': `Bearer ${getAdminToken()}`,
-            'Content-Type': 'application/json'
         }
     };
-    if (body) opts.body = JSON.stringify(body);
+    if (!isFormData) opts.headers['Content-Type'] = 'application/json';
+    if (body) opts.body = isFormData ? body : JSON.stringify(body);
     const res = await fetch(`${API_BASE}${path}`, opts);
     let data;
     try {
@@ -108,6 +109,10 @@ export async function addTransaction(payload) {
 // --- Admin API ---
 export async function getAdminProducts() {
     return await adminApiFetch('GET', '/product/get-all-products');
+}
+
+export async function createProduct(payload) {
+    return await adminApiFetch('POST', '/admin/product', payload);
 }
 
 export async function deleteProduct(id) {
