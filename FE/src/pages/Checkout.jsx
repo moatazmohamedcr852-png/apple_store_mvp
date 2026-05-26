@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import CartModal from '../components/CartModal';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const shippingByGovernorate = {
   Cairo: 5, Giza: 6, Alexandria: 7, Qalyubia: 6, Sharqia: 7, Dakahlia: 7,
   Beheira: 7, Monufia: 6, Gharbia: 6, "Kafr El Sheikh": 7, Damietta: 7, "Port Said": 8,
@@ -68,7 +70,7 @@ const Checkout = () => {
         status: false
       };
 
-      const res = await fetch('http://localhost:3000/transaction/add', {
+      const res = await fetch(`${API_BASE}/transaction/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(transactionPayload)

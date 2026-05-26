@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const ForgotPasswordModal = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
@@ -12,7 +14,7 @@ const ForgotPasswordModal = () => {
   const sendOtp = async () => {
     if (!email) return setMsg({ text: 'Please enter your email.', color: 'red' });
     try {
-      const res = await fetch('http://localhost:3000/user/send-otp', {
+      const res = await fetch(`${API_BASE}/user/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -30,7 +32,7 @@ const ForgotPasswordModal = () => {
   const verifyOtp = async () => {
     if (!otp) return setMsg({ text: 'Please enter the OTP.', color: 'red' });
     try {
-      const res = await fetch('http://localhost:3000/user/verify-otp', {
+      const res = await fetch(`${API_BASE}/user/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp })
@@ -50,7 +52,7 @@ const ForgotPasswordModal = () => {
     if (!newPassword || !confirmPassword) return setMsg({ text: 'Please fill in all password fields.', color: 'red' });
     if (newPassword !== confirmPassword) return setMsg({ text: 'Passwords do not match.', color: 'red' });
     try {
-      const res = await fetch('http://localhost:3000/user/reset-password', {
+      const res = await fetch(`${API_BASE}/user/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword, resetToken: cachedToken })

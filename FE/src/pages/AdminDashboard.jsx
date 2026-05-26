@@ -208,7 +208,7 @@ const AdminDashboard = () => {
                     const category = document.getElementById('apCategory').value;
                     let image = document.getElementById('apImage').value || 'https://via.placeholder.com/300?text=New+Product';
                     
-                    const res = await fetch('http://localhost:3000/admin/product', {
+                    const res = await fetch(`${(import.meta.env.VITE_API_URL || 'http://localhost:3000')}/admin/product`, {
                       method: 'POST',
                       headers: {
                         'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
