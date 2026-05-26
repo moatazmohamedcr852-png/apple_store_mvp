@@ -226,13 +226,13 @@ const AdminDashboard = () => {
                       triggerToast('Failed to add product', 'error');
                     }
                   }}>
-                    <div className="form-row" style={{ display: 'flex', gap: '15px' }}>
-                      <div className="form-group" style={{ flex: 1 }}><label>Name</label><input type="text" id="apName" required placeholder="Product name" className="form-control" /></div>
-                      <div className="form-group" id="apPriceGroup" style={{ flex: 1 }}><label id="apPriceLabel">Price (LE)</label><input type="number" id="apPrice" required placeholder="0.00" step="0.01" className="form-control" /></div>
+                    <div className="form-row">
+                      <div className="form-group"><label>Name</label><input type="text" id="apName" required placeholder="Product name" className="form-control" /></div>
+                      <div className="form-group" id="apPriceGroup"><label id="apPriceLabel">Price (LE)</label><input type="number" id="apPrice" required placeholder="0.00" step="0.01" className="form-control" /></div>
                     </div>
-                    <div className="form-row" style={{ display: 'flex', gap: '15px', marginTop: '15px' }}>
-                      <div className="form-group" style={{ flex: 1 }}><label>Stock</label><input type="number" id="apStock" placeholder="0" className="form-control" /></div>
-                      <div className="form-group" style={{ flex: 1 }}>
+                    <div className="form-row">
+                      <div className="form-group"><label>Stock</label><input type="number" id="apStock" placeholder="0" className="form-control" /></div>
+                      <div className="form-group">
                         <label>Category</label>
                         <select id="apCategory" required className="form-control" onChange={(e) => {
                           const apPrice = document.getElementById('apPrice');
