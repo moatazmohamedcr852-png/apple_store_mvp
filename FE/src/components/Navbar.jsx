@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import logoImg from '../assets/logo.jpg';
 
 const Navbar = () => {
   const { cart, user, logout } = useAppContext();
@@ -17,7 +18,7 @@ const Navbar = () => {
 
         {/* LOGO */}
         <Link className="navbar-brand fw-bold d-flex align-items-center" to="/">
-          <img src="/src/assets/logo.jpg" alt="Apple Store" className="logo-img" />
+          <img src={logoImg} alt="Apple Store" className="logo-img" />
         </Link>
 
         <div className="collapse navbar-collapse" id="navbarNav">
