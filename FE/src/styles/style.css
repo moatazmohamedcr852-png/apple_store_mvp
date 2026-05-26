@@ -183,13 +183,13 @@
             border: none;
         }
 
-        /* Logo completely static/absolute on the left */
+        /* Logo centered and on top */
         .navbar-brand {
             position: absolute;
-            left: 1rem;
+            left: 50%;
             top: 50%;
-            transform: translateY(-50%);
-            z-index: 1100;
+            transform: translate(-50%, -50%);
+            z-index: 1500;
             display: flex !important;
             align-items: center;
         }
