@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import logoImg from '../assets/logo.jpg';
 
 const Navbar = () => {
   const { cart, user, logout } = useAppContext();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
       <div className="container">
         {/* TOGGLER */}
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button
+          className="navbar-toggler"
+          type="button"
+          aria-controls="navbarNav"
+          aria-expanded={isMenuOpen}
+          aria-label="Toggle navigation"
+          onClick={() => setIsMenuOpen(open => !open)}
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
 
         {/* LOGO */}
-        <Link className="navbar-brand fw-bold d-flex align-items-center" to="/">
+        <Link className="navbar-brand fw-bold d-flex align-items-center" to="/" onClick={closeMenu}>
           <img src={logoImg} alt="Apple Store" className="logo-img" />
         </Link>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-0 align-items-center elegant-nav">
             <li className={`nav-item dropdown ${user ? '' : 'd-none'}`} id="userMenu">
               <a className="nav-link dropdown-toggle fw-semibold user-box" href="#" role="button" data-bs-toggle="dropdown">
@@ -34,16 +43,16 @@ const Navbar = () => {
               </ul>
             </li>
 
-            <li className="nav-item"><Link className="nav-link active" to="/">Home</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=stickers">Stickers</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=sticker sheets">Sticker Sheets</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=laptop stickers">Laptop Stickers</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=visa stickers">Visa Stickers</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=mugs">Mugs</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=medals">Medlas</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=coaster">Coaster</Link></li>
+            <li className="nav-item"><Link className="nav-link active" to="/" onClick={closeMenu}>Home</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=stickers" onClick={closeMenu}>Stickers</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=sticker sheets" onClick={closeMenu}>Sticker Sheets</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=laptop stickers" onClick={closeMenu}>Laptop Stickers</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=visa stickers" onClick={closeMenu}>Visa Stickers</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=mugs" onClick={closeMenu}>Mugs</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=medals" onClick={closeMenu}>Medlas</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=coaster" onClick={closeMenu}>Coaster</Link></li>
             <li className="nav-item">
-              <a className="nav-link smart-contact-link" href="#contact">Contact</a>
+              <a className="nav-link smart-contact-link" href="#contact" onClick={closeMenu}>Contact</a>
             </li>
           </ul>
         </div>

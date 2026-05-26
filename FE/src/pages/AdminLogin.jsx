@@ -46,12 +46,14 @@ const AdminLogin = () => {
     <div style={{
       minHeight: '100vh',
       display: 'flex',
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       background: 'linear-gradient(135deg, #f0fdf4 0%, #fefce8 50%, #f0fdf4 100%)',
       width: '100%',
       position: 'absolute',
-      top: 0, left: 0, zIndex: 9999
+      top: 0, left: 0, zIndex: 9999,
+      padding: '24px'
     }}>
       <div className="login-card" style={{
         background: '#fff',
@@ -99,6 +101,17 @@ const AdminLogin = () => {
           </button>
         </form>
       </div>
+      <footer style={{
+        marginTop: '24px',
+        color: '#4b5563',
+        fontSize: '13px',
+        textAlign: 'center',
+        lineHeight: 1.6
+      }}>
+        <div style={{ fontWeight: 600, color: '#166534' }}>Apple Store Admin</div>
+        <div>Secure access for store management</div>
+        <div style={{ color: '#6b7280' }}>© 2026 Apple Store. All rights reserved.</div>
+      </footer>
     </div>
   );
 };
