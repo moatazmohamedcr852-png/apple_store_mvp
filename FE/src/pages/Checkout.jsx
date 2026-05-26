@@ -18,7 +18,6 @@ const Checkout = () => {
     name: '', email: '', city: '', address: '', phone: ''
   });
   
-  const [paymentMethod, setPaymentMethod] = useState('cod');
   const [orderStatus, setOrderStatus] = useState({ msg: '', color: '' });
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -26,7 +25,7 @@ const Checkout = () => {
   
   // According to original checkout.js:
   // "const codExtra = checkoutCodRadio?.checked ? 2 : 0;"
-  const shippingCost = (form.city ? (shippingByGovernorate[form.city] || 0) : 0) + (paymentMethod === 'cod' ? 2 : 0);
+  const shippingCost = (form.city ? (shippingByGovernorate[form.city] || 0) : 0) + 2;
   const total = subtotal + shippingCost;
 
   const handlePlaceOrder = async () => {
@@ -49,12 +48,7 @@ const Checkout = () => {
       const productsPayload = {};
 
       cart.forEach(item => {
-        const key = item.size ? `${item.productId}_${item.size}` : item.productId;
-        if (!productsPayload[key]) {
-          productsPayload[key] = { productId: item.productId, quantity: 0 };
-          if (item.size) productsPayload[key].size = item.size;
-        }
-        productsPayload[key].quantity += Number(item.quantity);
+        productsPayload[item.productId] = (productsPayload[item.productId] || 0) + Number(item.quantity);
       });
 
       const transactionPayload = {
@@ -65,7 +59,7 @@ const Checkout = () => {
         city: form.city,
         products: productsPayload,
         totalPrice: total,
-        paymentMethod: paymentMethod === 'visa' ? 'visa' : 'cash',
+        paymentMethod: 'cash',
         status: false
       };
 
@@ -147,7 +141,7 @@ const Checkout = () => {
                 <h2 className="h5 fw-semibold mb-3">Payment Method</h2>
 
                 <div className="payment-option form-check mb-2">
-                  <input className="form-check-input" type="radio" name="payment" id="pmCod" value="cod" checked={paymentMethod === 'cod'} onChange={()=>setPaymentMethod('cod')} />
+                  <input className="form-check-input" type="radio" name="payment" id="pmCod" value="cod" checked readOnly />
                   <label className="form-check-label w-100" htmlFor="pmCod">
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="d-flex align-items-center gap-2">
@@ -162,29 +156,11 @@ const Checkout = () => {
                   </label>
                 </div>
 
-                <div className="payment-option form-check">
-                  <input className="form-check-input" type="radio" name="payment" id="pmVisa" value="visa" checked={paymentMethod === 'visa'} onChange={()=>setPaymentMethod('visa')} />
-                  <label className="form-check-label w-100" htmlFor="pmVisa">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div className="d-flex align-items-center gap-2">
-                        <i className="bi bi-credit-card"></i>
-                        <span className="fw-semibold">Visa</span>
-                      </div>
-                    </div>
-                  </label>
-                </div>
-
                 <div className="mt-4">
-                  {paymentMethod === 'cod' ? (
-                    <div className="alert alert-warning mb-0" id="codNote">
-                      Please prepare the full amount on delivery.
-                      You can inspect the package before paying.
-                    </div>
-                  ) : (
-                    <div className="alert alert-info mb-0" id="visaFields">
-                      <i className="bi bi-info-circle me-2"></i>You will be redirected to the secure payment gateway.
-                    </div>
-                  )}
+                  <div className="alert alert-warning mb-0" id="codNote">
+                    Please prepare the full amount on delivery.
+                    You can inspect the package before paying.
+                  </div>
                 </div>
 
               </div>

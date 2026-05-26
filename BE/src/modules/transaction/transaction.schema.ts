@@ -8,7 +8,7 @@ export const createTransactionSchema = z.object({
   phoneNumber: safeString(11),
   city: safeString(2),
   address: safeString(10),
-  paymentMethod: z.enum(["cash", "card"]),
+  paymentMethod: z.enum(["cash"]),
   totalPrice: z.number().positive("Total price must be positive"),
   products: z
     .record(

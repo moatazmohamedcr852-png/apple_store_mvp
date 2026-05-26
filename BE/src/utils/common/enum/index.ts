@@ -30,6 +30,5 @@ export enum PRODUCT_TYPE {
     coat="coat"
 }
 export enum PAYMENT_METHID {
-    cash = "cash",
-    visa = "visa"
+    cash = "cash"
 }
