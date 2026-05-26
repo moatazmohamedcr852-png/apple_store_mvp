@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+import { API_BASE } from '../config/api';
 
 const ForgotPasswordModal = () => {
   const [step, setStep] = useState(1);

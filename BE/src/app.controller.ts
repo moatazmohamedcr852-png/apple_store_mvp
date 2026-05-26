@@ -9,10 +9,40 @@ import { AppError } from './utils/common/Error';
 import { devConfig } from './config/dev.env';
 import path from 'path';
 
+const configuredOrigins = devConfig.CLIENT_URL
+    .split(',')
+    .map(origin => origin.trim())
+    .filter(Boolean);
+
+const allowedOrigins = new Set([
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    ...configuredOrigins,
+]);
+
+function isAllowedOrigin(origin?: string) {
+    if (!origin) return true;
+    if (configuredOrigins.includes('*')) return true;
+    if (allowedOrigins.has(origin)) return true;
+
+    try {
+        const { hostname } = new URL(origin);
+        return hostname.endsWith('.vercel.app');
+    } catch {
+        return false;
+    }
+}
+
 export function bootstrap(app: Express, express: any) {
     app.use(express.json());
     app.use(cors({
-        origin: devConfig.CLIENT_URL === '*' ? '*' : devConfig.CLIENT_URL.split(','),
+        origin: (origin, callback) => {
+            if (isAllowedOrigin(origin)) {
+                callback(null, true);
+                return;
+            }
+            callback(new Error(`Not allowed by CORS: ${origin}`));
+        },
         credentials: true,
     }));
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAdminProducts, getOrders, getOffers, deleteProduct, updateProduct, createOffer, deleteOffer } from '../services/api';
+import { API_BASE } from '../config/api';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('products');
@@ -208,7 +209,7 @@ const AdminDashboard = () => {
                     const category = document.getElementById('apCategory').value;
                     let image = document.getElementById('apImage').value || 'https://via.placeholder.com/300?text=New+Product';
                     
-                    const res = await fetch(`${(import.meta.env.VITE_API_URL || 'http://localhost:3000')}/admin/product`, {
+                    const res = await fetch(`${API_BASE}/admin/product`, {
                       method: 'POST',
                       headers: {
                         'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
