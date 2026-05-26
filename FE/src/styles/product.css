@@ -564,9 +564,12 @@ html {
 
 /* ===================== Mobile Responsive ===================== */
 @media (max-width: 991px) {
+    body.mobile-nav-open {
+        overflow: hidden;
+    }
+
     .navbar .container {
         display: flex;
-        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         position: relative;
@@ -580,8 +583,18 @@ html {
     .navbar-brand {
         position: absolute;
         left: 50%;
-        transform: translateX(-50%);
-        z-index: 1100;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1500;
+        display: flex !important;
+        align-items: center;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .navbar.menu-open .navbar-brand {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
 
     .icon-group {
@@ -591,22 +604,32 @@ html {
 
     #navbarNav {
         order: 4;
-        position: static;
-        flex-basis: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
         width: 100%;
-        margin-top: 0.75rem;
-        padding: 0.75rem 0 0.85rem;
+        padding: 0;
         background: var(--navbar-bg);
         border-top: 1px solid rgba(118, 184, 82, 0.18);
-        box-shadow: none;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         z-index: 1000;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
+        display: flex;
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        transition: all 0.4s ease-in-out;
     }
 
     #navbarNav.show {
-        display: flex;
+        max-height: calc(100vh - 70px);
+        opacity: 1;
+        visibility: visible;
+        padding: 0.75rem 0 0.85rem;
+        overflow-y: auto;
     }
 
     .navbar-nav {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import logoImg from '../assets/logo.jpg';
@@ -10,8 +10,13 @@ const Navbar = () => {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const closeMenu = () => setIsMenuOpen(false);
 
+  useEffect(() => {
+    document.body.classList.toggle('mobile-nav-open', isMenuOpen);
+    return () => document.body.classList.remove('mobile-nav-open');
+  }, [isMenuOpen]);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+    <nav className={`navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="container">
         {/* TOGGLER */}
         <button

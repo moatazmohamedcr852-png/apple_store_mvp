@@ -167,9 +167,12 @@
 
     /* ===================== Mobile Navbar ===================== */
     @media (max-width: 991px) {
+        body.mobile-nav-open {
+            overflow: hidden;
+        }
+
         .navbar .container {
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             position: relative;
@@ -193,6 +196,13 @@
             z-index: 1500;
             display: flex !important;
             align-items: center;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .navbar.menu-open .navbar-brand {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
         /* Icons right */
