@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -35,7 +36,7 @@ const Footer = () => {
 
       {/* Footer bottom */}
       <div className="text-center text-muted mt-2" style={{ fontSize: '0.8rem' }}>
-        &copy; 2026 Apple Store. All rights reserved.
+        &copy; 2026 Apple Store. All rights reserved. | <Link to="/pages/admin-login.html" style={{ color: '#76b852', textDecoration: 'none' }}>Admin Login</Link>
       </div>
     </footer>
   );
