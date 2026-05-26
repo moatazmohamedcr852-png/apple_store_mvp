@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -28,7 +30,7 @@ export const AppProvider = ({ children }) => {
     }
 
     // Load Products
-    fetch('http://localhost:3000/product/get-all-products')
+    fetch(`${API_BASE}/product/get-all-products`)
       .then(res => res.json())
       .then(result => {
         if (result && result.success) {
@@ -100,7 +102,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const res = await fetch('http://localhost:3000/user/login', {
+    const res = await fetch(`${API_BASE}/user/login`, {
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({ email, password })
@@ -125,7 +127,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const signup = async (name, email, password, phone) => {
-    const res = await fetch('http://localhost:3000/user/register', {
+    const res = await fetch(`${API_BASE}/user/register`, {
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({ name, email, password, phone })
