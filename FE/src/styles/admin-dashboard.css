@@ -434,27 +434,45 @@ table img.product-thumb {
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 500;
+    z-index: 3000;
 }
 
 .modal-overlay.show {
     display: flex;
 }
 
-.modal {
+.admin-modal {
     background: var(--white);
     border-radius: 16px;
     padding: 32px;
     width: 100%;
     max-width: 440px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
     box-shadow: var(--shadow-lg);
+    position: relative;
 }
 
-.modal h3 {
+.admin-modal h3 {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 20px;
     color: var(--green-800);
+}
+
+.admin-modal-image {
+    margin-bottom: 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    background: var(--gray-50);
+    overflow: hidden;
+}
+
+.admin-modal-image img {
+    display: block;
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
 }
 
 .modal-btns {
@@ -520,7 +538,7 @@ table img.product-thumb {
         grid-template-columns: 1fr;
     }
     
-    .modal {
+    .admin-modal {
         padding: 24px;
         margin: 16px;
     }

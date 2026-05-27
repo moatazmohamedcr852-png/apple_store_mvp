@@ -17,14 +17,14 @@ export class OfferHelper {
         const productRepo = new ProductRepository();
         const products = await productRepo.getAllProducts({ category } as any, {}, {});
 
-        for (const product of products) {
+        await Promise.all(products.map((product) => {
             const originalPrice = (product as any).originalPrice ?? product.price;
             const newPrice = this.calculateDiscountedPrice(originalPrice, offer.discountType, offer.discountValue);
-            await productRepo.update(String(product._id), {
+            return productRepo.update(String(product._id), {
                 originalPrice: originalPrice,
                 price: newPrice
             });
-        }
+        }));
     }
 
     public static async revertOfferFromCategory(category: string) {
@@ -43,23 +43,23 @@ export class OfferHelper {
         if (activeOffers.length > 0) {
             // Apply the latest valid active offer
             const latestOffer = activeOffers[0] as unknown as IOffer;
-            for (const product of products) {
+            await Promise.all(products.map((product) => {
                 const originalPrice = (product as any).originalPrice ?? product.price;
                 const newPrice = this.calculateDiscountedPrice(originalPrice, latestOffer.discountType, latestOffer.discountValue);
-                await productRepo.update(String(product._id), {
+                return productRepo.update(String(product._id), {
                     originalPrice: originalPrice,
                     price: newPrice
                 });
-            }
+            }));
         } else {
             // Revert all products in this category to their original price
-            for (const product of products) {
+            await Promise.all(products.map((product) => {
                 const originalPrice = (product as any).originalPrice ?? product.price;
-                await productRepo.update(String(product._id), {
+                return productRepo.update(String(product._id), {
                     price: originalPrice,
                     originalPrice: originalPrice
                 });
-            }
+            }));
         }
     }
 

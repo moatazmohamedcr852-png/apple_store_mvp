@@ -1,5 +1,4 @@
 import type { Express, NextFunction, Request, Response } from 'express';
-import { connectDB } from './DB/connection';
 import userController from './modules/user/user.controller';
 import cors from 'cors';
 import transactionController from './modules/transaction/transaction.controller';
@@ -72,6 +71,4 @@ export function bootstrap(app: Express, express: any) {
     app.use("/:dummy", (req: Request, res: Response, next: NextFunction) => {
         res.status(404).json({ message: "invalid url" })
     })
-
-    connectDB();
 }

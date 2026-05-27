@@ -164,7 +164,7 @@ const AdminDashboard = () => {
 
       {showDeleteModal && (
         <div className="modal-overlay show" id="deleteModal" style={{ display: 'flex' }}>
-          <div className="modal">
+          <div className="admin-modal">
             <h3>⚠️ Delete Product</h3>
             <p>Are you sure you want to delete <strong>{deleteTarget?.name}</strong>? This action cannot be undone.</p>
             <div className="modal-btns">
@@ -177,14 +177,14 @@ const AdminDashboard = () => {
 
       {showEditModal && (
         <div className="modal-overlay show" id="editModal" style={{ display: 'flex' }}>
-          <div className="modal">
+          <div className="admin-modal">
             <h3>✏️ Edit Product</h3>
             {editTarget.image && (
-              <div style={{ marginBottom: '16px' }}>
+              <div className="admin-modal-image">
                 <img
                   src={editTarget.image}
                   alt={editTarget.name}
-                  style={{ width: '100%', maxHeight: '180px', objectFit: 'contain', borderRadius: '12px', border: '1px solid var(--gray-200)', background: 'var(--gray-50)' }}
+                  onError={e => { e.currentTarget.style.display = 'none'; }}
                 />
               </div>
             )}
