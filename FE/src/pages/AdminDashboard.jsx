@@ -131,8 +131,15 @@ const AdminDashboard = () => {
     setShowEditModal(true);
   };
   const confirmEdit = async () => {
+    const formData = new FormData();
     const price = editTarget.category === 'stickers' ? 20 : Number(editTarget.price);
-    const res = await updateProduct(editTarget.id, { name: editTarget.name, price, stock: Number(editTarget.stock) });
+    formData.set('name', editTarget.name);
+    formData.set('price', String(price));
+    formData.set('stock', String(Number(editTarget.stock)));
+    const photo = document.getElementById('editPhoto')?.files?.[0];
+    if (photo) formData.set('photo', photo);
+
+    const res = await updateProduct(editTarget.id, formData);
     if (res?.success) {
       triggerToast('Updated successfully');
       loadProducts();
@@ -192,6 +199,10 @@ const AdminDashboard = () => {
             <div className="form-group" style={{ marginTop: '12px' }}>
               <label htmlFor="editStock">Stock</label>
               <input type="number" id="editStock" value={editTarget.stock} onChange={e => setEditTarget({ ...editTarget, stock: e.target.value })} />
+            </div>
+            <div className="form-group" style={{ marginTop: '12px' }}>
+              <label htmlFor="editPhoto">Replace Image</label>
+              <input type="file" id="editPhoto" accept="image/*" />
             </div>
             <div className="modal-btns">
               <button className="btn" style={{ background: 'var(--gray-100)', color: 'var(--gray-700)' }} onClick={() => setShowEditModal(false)}>Cancel</button>

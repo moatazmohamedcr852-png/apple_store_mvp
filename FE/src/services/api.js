@@ -40,6 +40,13 @@ export async function adminApiFetch(method, path, body = null) {
         window.location.href = '/pages/admin-login.html';
         return;
     }
+    if (!res.ok && data) {
+        return {
+            success: false,
+            message: data.message || data.error || `Request failed with status ${res.status}`,
+            errorDetails: data.errorDetails
+        };
+    }
     return data;
 }
 

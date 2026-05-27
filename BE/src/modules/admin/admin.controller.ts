@@ -10,7 +10,7 @@ router.post("/login", adminService.login);
 
 // Protected routes — require admin JWT
 router.post("/product", adminAuth, upload.single("photo"), adminService.createProduct);
-router.put("/product/:id", adminAuth, adminService.updateProduct);
+router.put("/product/:id", adminAuth, upload.single("photo"), adminService.updateProduct);
 router.delete("/product/:id", adminAuth, adminService.deleteProduct);
 router.get("/orders", adminAuth, adminService.getOrders);
 router.get("/offers", adminAuth, adminService.getOffers);

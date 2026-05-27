@@ -82,6 +82,7 @@ class AdminService {
         try {
             const id = req.params.id as string;
             const { name, price, stock } = req.body;
+            const photo = req.file;
 
             const product = await this.productRepository.findById(id);
             if (!product) {
@@ -98,6 +99,12 @@ class AdminService {
                 updateData.price = await OfferHelper.calculatePriceWithActiveOffers(product.category, originalPrice);
             }
             if (stock !== undefined) updateData.stock = Number(stock);
+            if (photo) {
+                const { secure_url } = await cloudinary.uploader.upload(photo.path, {
+                    folder: `apple-store/${product.category}/${product.type}`
+                });
+                updateData.image = secure_url;
+            }
 
             const updated = await this.productRepository.update(id, updateData);
             return res.status(200).json({
