@@ -12,14 +12,44 @@ const Navbar = () => {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Close menu on route change
+  const handleNavClick = () => {
+    closeMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Close menu on route change and scroll page to top
   useEffect(() => {
     closeMenu();
+    window.scrollTo(0, 0);
   }, [location.pathname, location.search]);
 
+  // Lock page scroll while menu is open (keeps viewport fixed on navbar)
   useEffect(() => {
-    document.body.classList.toggle('mobile-nav-open', isMenuOpen);
-    return () => document.body.classList.remove('mobile-nav-open');
+    if (!isMenuOpen) return;
+
+    const scrollY = window.scrollY;
+    const { style } = document.body;
+
+    style.position = 'fixed';
+    style.top = `-${scrollY}px`;
+    style.left = '0';
+    style.right = '0';
+    style.width = '100%';
+    style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    document.body.classList.add('mobile-nav-open');
+
+    return () => {
+      style.position = '';
+      style.top = '';
+      style.left = '';
+      style.right = '';
+      style.width = '';
+      style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.body.classList.remove('mobile-nav-open');
+      window.scrollTo(0, scrollY);
+    };
   }, [isMenuOpen]);
 
   // Close on outside click / Escape
@@ -63,7 +93,7 @@ const Navbar = () => {
         </button>
 
         {/* LOGO */}
-        <Link className="navbar-brand fw-bold d-flex align-items-center" to="/" onClick={closeMenu}>
+        <Link className="navbar-brand fw-bold d-flex align-items-center" to="/" onClick={handleNavClick}>
           <img src={logoImg} alt="Apple Store" className="logo-img" />
         </Link>
 
@@ -81,14 +111,14 @@ const Navbar = () => {
               </ul>
             </li>
 
-            <li className="nav-item"><Link className="nav-link active" to="/" onClick={closeMenu}>Home</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=stickers" onClick={closeMenu}>Stickers</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=sticker sheets" onClick={closeMenu}>Sticker Sheets</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=laptop stickers" onClick={closeMenu}>Laptop Stickers</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=visa stickers" onClick={closeMenu}>Visa Stickers</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=mugs" onClick={closeMenu}>Mugs</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=medals" onClick={closeMenu}>Medlas</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=coaster" onClick={closeMenu}>Coaster</Link></li>
+            <li className="nav-item"><Link className="nav-link active" to="/" onClick={handleNavClick}>Home</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=stickers" onClick={handleNavClick}>Stickers</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=sticker sheets" onClick={handleNavClick}>Sticker Sheets</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=laptop stickers" onClick={handleNavClick}>Laptop Stickers</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=visa stickers" onClick={handleNavClick}>Visa Stickers</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=mugs" onClick={handleNavClick}>Mugs</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=medals" onClick={handleNavClick}>Medlas</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/pages/category.html?cat=coaster" onClick={handleNavClick}>Coaster</Link></li>
             <li className="nav-item">
               <a className="nav-link smart-contact-link" href="#contact" onClick={closeMenu}>Contact</a>
             </li>

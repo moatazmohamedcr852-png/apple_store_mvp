@@ -564,8 +564,12 @@ html {
 
 /* ===================== Mobile Responsive ===================== */
 @media (max-width: 991px) {
-    body.mobile-nav-open {
+    body.mobile-nav-open,
+    html:has(body.mobile-nav-open) {
         overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: none;
+        height: 100%;
     }
 
     .navbar .container {
@@ -577,7 +581,8 @@ html {
 
     .navbar-toggler {
         order: 1;
-        z-index: 1100;
+        z-index: 1200;
+        position: relative;
     }
 
     .navbar-brand {
@@ -599,48 +604,72 @@ html {
 
     .icon-group {
         order: 3;
-        z-index: 1100;
+        z-index: 1200;
+        position: relative;
     }
 
+    /* Full-page menu — no scroll */
     #navbarNav {
         order: 4;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        inset: 0;
+        top: 0;
         left: 0;
+        right: 0;
+        bottom: 0;
         width: 100%;
-        padding: 0;
+        height: 100dvh;
+        height: 100vh;
         background: var(--navbar-bg);
-        border-top: 1px solid rgba(118, 184, 82, 0.18);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        z-index: 1000;
+        z-index: 1050;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         display: flex;
-        max-height: 0;
+        max-height: none;
         opacity: 0;
         visibility: hidden;
         overflow: hidden;
-        transition: all 0.4s ease-in-out;
+        padding: 5.5rem 1rem 2rem;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
     }
 
     #navbarNav.show {
-        max-height: calc(100vh - 70px);
         opacity: 1;
         visibility: visible;
-        padding: 0.75rem 0 0.85rem;
-        overflow-y: auto;
+        pointer-events: auto;
+        transform: translateY(0);
+        overflow: hidden;
     }
 
     .navbar-nav {
         flex-direction: column;
+        justify-content: space-evenly;
         align-items: center;
         width: 100%;
+        height: 100%;
+        max-height: 100%;
+        margin: 0;
+        padding: 0;
+        flex-shrink: 1;
+        overflow: hidden;
+    }
+
+    .navbar-nav .nav-item {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 0;
     }
 
     .navbar-nav .nav-link {
-        padding: 0.5rem 0;
-        font-size: 1.3rem;
+        padding: 0.25rem 0;
+        font-size: clamp(1rem, 3.8vh, 1.45rem);
+        line-height: 1.2;
         width: 100%;
         text-align: center;
     }
