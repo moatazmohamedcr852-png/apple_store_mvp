@@ -71,7 +71,17 @@ const Category = () => {
   }
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
-  const currentProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const safePage = Math.min(currentPage, totalPages);
+  const currentProducts = filteredProducts.slice((safePage - 1) * itemsPerPage, safePage * itemsPerPage);
+
+  // Show a window of page numbers starting from the current page
+  const maxVisiblePages = 5;
+  const pageWindowStart = safePage;
+  const pageWindowEnd = Math.min(totalPages, pageWindowStart + maxVisiblePages - 1);
+  const visiblePages = [];
+  for (let page = pageWindowStart; page <= pageWindowEnd; page++) {
+    visiblePages.push(page);
+  }
 
   const goToPage = (page) => {
     const next = Math.min(Math.max(1, page), totalPages);
@@ -291,16 +301,16 @@ const Category = () => {
               {totalPages > 1 && (
                 <nav className="mt-5">
                   <ul className="pagination justify-content-center" id="pagination">
-                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                      <button className="page-link" aria-label="Previous page" onClick={() => goToPage(currentPage - 1)}><i className="bi bi-chevron-left"></i></button>
+                    <li className={`page-item ${safePage === 1 ? 'disabled' : ''}`}>
+                      <button className="page-link" aria-label="Previous page" onClick={() => goToPage(safePage - 1)}><i className="bi bi-chevron-left"></i></button>
                     </li>
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                        <button className="page-link" onClick={() => goToPage(i + 1)}>{i + 1}</button>
+                    {visiblePages.map((page) => (
+                      <li key={page} className={`page-item ${safePage === page ? 'active' : ''}`}>
+                        <button className="page-link" onClick={() => goToPage(page)}>{page}</button>
                       </li>
                     ))}
-                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                      <button className="page-link" aria-label="Next page" onClick={() => goToPage(currentPage + 1)}><i className="bi bi-chevron-right"></i></button>
+                    <li className={`page-item ${safePage === totalPages ? 'disabled' : ''}`}>
+                      <button className="page-link" aria-label="Next page" onClick={() => goToPage(safePage + 1)}><i className="bi bi-chevron-right"></i></button>
                     </li>
                   </ul>
                 </nav>
