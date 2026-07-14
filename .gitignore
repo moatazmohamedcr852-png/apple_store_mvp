@@ -1,8 +1,9 @@
 # Dependency directories
 node_modules/
 BE/node_modules/
+FE/node_modules/
 
-# Environment files
+# Environment files (keep *.example tracked)
 .env
 .env.local
 .env.development.local
@@ -10,9 +11,13 @@ BE/node_modules/
 .env.production.local
 BE/.env
 BE/.env.local
+FE/.env
+FE/.env.local
+FE/.env.production
 
 # Build output
 BE/dist/
+FE/dist/
 dist/
 .vercel/
 
@@ -27,9 +32,10 @@ upload_products.py
 delete_products.py
 upload-to-prod.js
 
+# Large archives (source is already in the repo)
+BE+FE.zip
+*.zip
+
 # OS metadata
 .DS_Store
 Thumbs.db
-
-# Misc
-package-lock.json

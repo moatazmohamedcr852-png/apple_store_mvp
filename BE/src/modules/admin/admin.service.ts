@@ -147,11 +147,19 @@ class AdminService {
                     const productsMap = t.products instanceof Map ? t.products : new Map(Object.entries(t.products || {}));
                     const productsArr: any[] = [];
 
-                    for (const [productId, quantity] of productsMap.entries()) {
+                    for (const [key, value] of productsMap.entries()) {
+                        const productId = String(key).split("_")[0] || String(key);
+                        const quantity = typeof value === "object" && value !== null
+                            ? Number((value as any).quantity)
+                            : Number(value);
+                        const size = typeof value === "object" && value !== null
+                            ? (value as any).size
+                            : undefined;
                         const product = await this.productRepository.findById(productId);
+                        const name = product ? product.name : "Unknown Product";
                         productsArr.push({
-                            name: product ? product.name : "Unknown Product",
-                            quantity: quantity as number,
+                            name: size ? `${name} (${size})` : name,
+                            quantity,
                         });
                     }
 

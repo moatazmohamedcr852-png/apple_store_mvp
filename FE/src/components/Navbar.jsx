@@ -1,22 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import logoImg from '../assets/logo.jpg';
 
 const Navbar = () => {
   const { cart, user, logout } = useAppContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+  const navRef = useRef(null);
+  const location = useLocation();
+
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const closeMenu = () => setIsMenuOpen(false);
+
+  // Close menu on route change
+  useEffect(() => {
+    closeMenu();
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     document.body.classList.toggle('mobile-nav-open', isMenuOpen);
     return () => document.body.classList.remove('mobile-nav-open');
   }, [isMenuOpen]);
 
+  // Close on outside click / Escape
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handlePointerDown = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        closeMenu();
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeMenu();
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
   return (
-    <nav className={`navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm ${isMenuOpen ? 'menu-open' : ''}`}>
+    <nav
+      ref={navRef}
+      className={`navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm ${isMenuOpen ? 'menu-open' : ''}`}
+    >
       <div className="container">
         {/* TOGGLER */}
         <button
@@ -35,7 +67,8 @@ const Navbar = () => {
           <img src={logoImg} alt="Apple Store" className="logo-img" />
         </Link>
 
-        <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarNav">
+        {/* Avoid Bootstrap .collapse — React owns open/close via .show */}
+        <div className={`navbar-collapse mobile-nav-panel ${isMenuOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-0 align-items-center elegant-nav">
             <li className={`nav-item dropdown ${user ? '' : 'd-none'}`} id="userMenu">
               <a className="nav-link dropdown-toggle fw-semibold user-box" href="#" role="button" data-bs-toggle="dropdown">
@@ -43,7 +76,7 @@ const Navbar = () => {
               </a>
               <ul className="dropdown-menu">
                 <li>
-                  <button className="dropdown-item text-danger" id="logoutBtn" onClick={() => { logout(); window.location.href = '/'; }}>Logout</button>
+                  <button className="dropdown-item text-danger" id="logoutBtn" onClick={() => { logout(); closeMenu(); window.location.href = '/'; }}>Logout</button>
                 </li>
               </ul>
             </li>
@@ -64,18 +97,17 @@ const Navbar = () => {
 
         {/* ICONS */}
         <div className="icon-group d-flex align-items-center">
-          {/* User icon (logged out) */}
           {!user && (
-            <a href="#" className="nav-icon me-2" id="userIcon" data-bs-toggle="modal" data-bs-target="#loginModal">
+            <a href="#" className="nav-icon me-2" id="userIcon" data-bs-toggle="modal" data-bs-target="#loginModal" onClick={closeMenu}>
               <i className="fa-solid fa-user"></i>
             </a>
           )}
 
-          <a href="#" className="nav-icon me-2" data-bs-toggle="modal" data-bs-target="#searchModal">
+          <a href="#" className="nav-icon me-2" data-bs-toggle="modal" data-bs-target="#searchModal" onClick={closeMenu}>
             <i className="fa-solid fa-magnifying-glass"></i>
           </a>
 
-          <a href="#" className="nav-icon btn btn-outline-success position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+          <a href="#" className="nav-icon btn btn-outline-success position-relative" data-bs-toggle="modal" data-bs-target="#cartModal" onClick={closeMenu}>
             <i className="bi bi-cart3"></i>
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
               {cartCount}

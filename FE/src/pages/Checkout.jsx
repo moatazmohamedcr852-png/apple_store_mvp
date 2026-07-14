@@ -48,7 +48,12 @@ const Checkout = () => {
       const productsPayload = {};
 
       cart.forEach(item => {
-        productsPayload[item.productId] = (productsPayload[item.productId] || 0) + Number(item.quantity);
+        const key = item.size ? `${item.productId}_${item.size}` : String(item.productId);
+        const existing = productsPayload[key];
+        productsPayload[key] = {
+          quantity: (existing?.quantity || 0) + Number(item.quantity),
+          ...(item.size ? { size: item.size } : {}),
+        };
       });
 
       const transactionPayload = {

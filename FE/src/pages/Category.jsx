@@ -73,6 +73,13 @@ const Category = () => {
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
   const currentProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+  const goToPage = (page) => {
+    const next = Math.min(Math.max(1, page), totalPages);
+    if (next === currentPage) return;
+    setCurrentPage(next);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const getCategoryTitle = () => {
     if (catParam === "sticker sheets") return "Sticker Sheets";
     if (catParam === "stickers") return "Stickers";
@@ -285,15 +292,15 @@ const Category = () => {
                 <nav className="mt-5">
                   <ul className="pagination justify-content-center" id="pagination">
                     <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => setCurrentPage(p => Math.max(1, p - 1))}><i className="bi bi-chevron-left"></i></button>
+                      <button className="page-link" aria-label="Previous page" onClick={() => goToPage(currentPage - 1)}><i className="bi bi-chevron-left"></i></button>
                     </li>
                     {Array.from({ length: totalPages }).map((_, i) => (
-                      <li key={i+1} className={`page-item ${currentPage === i+1 ? 'active' : ''}`}>
-                        <button className="page-link" onClick={() => setCurrentPage(i+1)}>{i+1}</button>
+                      <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                        <button className="page-link" onClick={() => goToPage(i + 1)}>{i + 1}</button>
                       </li>
                     ))}
                     <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}><i className="bi bi-chevron-right"></i></button>
+                      <button className="page-link" aria-label="Next page" onClick={() => goToPage(currentPage + 1)}><i className="bi bi-chevron-right"></i></button>
                     </li>
                   </ul>
                 </nav>

@@ -7,6 +7,9 @@ export class TransactionRepository extends AbstractRepository<ITransaction>{
         constructor(){
         super(Transaction)
     }
+    async count() {
+        return this.model.countDocuments();
+    }
     async getAllTransactions(filter:Partial<ITransaction>,projection:ProjectionType<ITransaction>,options:QueryOptions<ITransaction>){
        return await Transaction.find(filter,projection,options);
     }

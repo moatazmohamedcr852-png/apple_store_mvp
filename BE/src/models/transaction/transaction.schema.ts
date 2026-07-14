@@ -26,7 +26,13 @@ const transSchema = new Schema<ITransaction>(
     },
     products: {
         type: Map,
-        of: Number,
+        of: new Schema(
+            {
+                quantity: { type: Number, required: true },
+                size: { type: String, required: false },
+            },
+            { _id: false }
+        ),
         required: true
     },
     totalPrice: {
