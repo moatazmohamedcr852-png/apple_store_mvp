@@ -9,9 +9,7 @@ FE/node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
-BE/.env
 BE/.env.local
-FE/.env
 FE/.env.local
 FE/.env.production
 
