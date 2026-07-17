@@ -1,43 +1,120 @@
-# Apple Store
+# 🍎 Apple Store — Premium Stickers Shop
 
-Full-stack stickers shop (React frontend + Express/MongoDB backend).
+Full-stack e-commerce stickers shop built with **React + Vite** (frontend) and **Express + TypeScript + MongoDB** (backend).
 
-## Quick start (for collaborators)
+---
+
+## 🚀 Quick Start
 
 ```bash
-# 1. Clone
+# 1. Clone the repository
 git clone https://github.com/moatazmohamedcr852-png/apple_store_mvp.git
 cd apple_store_mvp
 
-# 2. Install dependencies (root + BE + FE)
+# 2. Install all dependencies (root + backend + frontend)
 npm run setup
 
-# 3. Environment files
-cp BE/.env.example BE/.env
-cp FE/.env.example FE/.env
-
-# Edit BE/.env — at minimum set a working MONGODB_URI
-# (and Cloudinary / SMTP / Telegram keys if you need uploads, emails, or notifications)
-
-# 4. Make sure MongoDB is running locally, OR put your Atlas URI in BE/.env
-
-# 5. Start backend + frontend together
+# 3. Start the development servers
 npm run dev
 ```
 
-- Frontend: http://localhost:5173  
-- Backend: http://localhost:3000  
-- Admin login uses `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `BE/.env`
+> **That's it!** The `.env` files are already included in the repo — no manual configuration needed.
 
-## Scripts
+- 🌐 **Frontend:** http://localhost:5173
+- ⚙️ **Backend API:** http://localhost:3000
+- 🔐 **Admin Panel:** Login with the credentials in `BE/.env` (`ADMIN_EMAIL` / `ADMIN_PASSWORD`)
 
-| Command | Description |
-|---------|-------------|
-| `npm run setup` | Install root, BE, and FE dependencies |
-| `npm run dev` | Run API + Vite together |
-| `npm run build` | Build BE (TypeScript) and FE (Vite) |
+---
 
-## Project layout
+## 📦 Available Scripts
 
-- `BE/` — Express + TypeScript + MongoDB API
-- `FE/` — React + Vite storefront
+| Command          | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| `npm run setup`  | Install root, BE, and FE dependencies in one go  |
+| `npm run dev`    | Run backend + frontend concurrently              |
+| `npm run build`  | Build BE (TypeScript) and FE (Vite) for production |
+
+### Backend only
+
+```bash
+cd BE
+npm run start:dev   # Dev mode with auto-reload
+npm run build       # Compile TypeScript
+npm start           # Run compiled output
+```
+
+### Frontend only
+
+```bash
+cd FE
+npm run dev         # Vite dev server
+npm run build       # Production build
+npm run preview     # Preview production build
+```
+
+---
+
+## 🗂️ Project Structure
+
+```
+apple-store-main/
+├── BE/                  # Backend — Express + TypeScript
+│   ├── src/
+│   │   ├── config/      # Environment config loader
+│   │   ├── controllers/ # Route handlers
+│   │   ├── models/      # Mongoose models
+│   │   ├── routes/      # API routes
+│   │   └── index.ts     # Entry point
+│   └── .env             # Backend environment variables
+│
+├── FE/                  # Frontend — React + Vite
+│   ├── src/
+│   │   ├── components/  # Reusable UI components
+│   │   ├── pages/       # Page components
+│   │   ├── services/    # API service layer
+│   │   └── styles/      # CSS styles
+│   └── .env             # Frontend environment variables
+│
+├── .env.example         # Template reference for BE env vars
+├── FE/.env.example      # Template reference for FE env vars
+└── package.json         # Root scripts (setup, dev, build)
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer      | Technology                          |
+| ---------- | ----------------------------------- |
+| Frontend   | React 19, Vite 8, React Router 7   |
+| Backend    | Express 5, TypeScript               |
+| Database   | MongoDB Atlas (Mongoose)            |
+| Storage    | Cloudinary (product images)         |
+| Email      | Nodemailer (SMTP)                   |
+| Auth       | JWT (JSON Web Tokens)               |
+| Notifications | Telegram Bot API                 |
+
+---
+
+## 📋 Environment Variables
+
+All environment variables are pre-configured in the tracked `.env` files:
+
+### `BE/.env`
+
+| Variable               | Purpose                        |
+| ---------------------- | ------------------------------ |
+| `PORT`                 | Backend server port            |
+| `MONGODB_URI`          | MongoDB connection string      |
+| `CLIENT_URL`           | Allowed CORS origin            |
+| `CLOUDINARY_*`         | Image upload service           |
+| `SMTP_EMAIL/PASSWORD`  | Email sending (order confirm)  |
+| `JWT_SECRET`           | Auth token signing key         |
+| `TELEGRAM_*`           | Order notification bot         |
+| `ADMIN_EMAIL/PASSWORD` | Admin dashboard login          |
+
+### `FE/.env`
+
+| Variable       | Purpose                     |
+| -------------- | --------------------------- |
+| `VITE_API_URL` | Backend API base URL        |
