@@ -7,6 +7,7 @@ const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
   const [offers, setOffers] = useState([]);
   const [adminName, setAdminName] = useState('Admin');
+  const [productSearch, setProductSearch] = useState('');
   
   // Modals
   const [toastMsg, setToastMsg] = useState('');
@@ -92,6 +93,12 @@ const AdminDashboard = () => {
       triggerToast('Could not load offers', 'error');
     }
   };
+
+  const normalizedProductSearch = productSearch.trim().toLowerCase();
+  const filteredProducts = normalizedProductSearch
+    ? products.filter(product => [product.name, product.category, product.type, product.id, product._id]
+      .some(value => String(value || '').toLowerCase().includes(normalizedProductSearch)))
+    : products;
 
   const submitProduct = async (e) => {
     e.preventDefault();
@@ -255,6 +262,27 @@ const AdminDashboard = () => {
                 </button>
               </div>
 
+              <div className="product-search-bar">
+                <label htmlFor="productSearch">Search products</label>
+                <div className="product-search-controls">
+                  <input
+                    id="productSearch"
+                    type="search"
+                    value={productSearch}
+                    onChange={e => setProductSearch(e.target.value)}
+                    placeholder="Search by name, category, type, or ID"
+                  />
+                  {productSearch && (
+                    <button type="button" className="btn btn-sm" onClick={() => setProductSearch('')}>
+                      Clear
+                    </button>
+                  )}
+                </div>
+                <span className="product-search-count">
+                  Showing {filteredProducts.length} of {products.length} products
+                </span>
+              </div>
+
               {showAddProduct && (
                 <div id="addProductCard" style={{ marginBottom: '20px', padding: '20px', background: 'var(--green-50)', borderRadius: '12px', border: '1px solid var(--green-200)' }}>
                   <h3 style={{ marginBottom: '16px', fontSize: '15px', color: 'var(--green-800)' }}>Add New Product</h3>
@@ -320,7 +348,7 @@ const AdminDashboard = () => {
                 <table>
                   <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Type</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
                   <tbody id="productsTableBody">
-                    {products.map(p => (
+                    {filteredProducts.map(p => (
                       <tr key={p.id || p._id}>
                         <td><img src={p.image} className="product-thumb" alt={p.name} /></td>
                         <td><strong>{p.name}</strong></td>
@@ -336,7 +364,7 @@ const AdminDashboard = () => {
                         </td>
                       </tr>
                     ))}
-                    {products.length === 0 && !dashboardError && (
+                    {filteredProducts.length === 0 && !dashboardError && (
                       <tr><td colSpan="7" className="empty-state">No products found.</td></tr>
                     )}
                   </tbody>
