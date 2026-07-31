@@ -3,6 +3,8 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
+EXPOSE 3000
+
 # Copy the backend package.json files
 COPY BE/package*.json ./
 
