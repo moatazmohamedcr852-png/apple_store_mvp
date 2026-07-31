@@ -45,6 +45,13 @@ export function bootstrap(app: Express, express: any) {
         credentials: true,
     }));
 
+    app.get('/', (req: Request, res: Response) => {
+        res.status(200).json({
+            message: 'Apple Store API is running',
+            health: '/health',
+        });
+    });
+
     // Health check for Render keep-alive
     app.get('/health', (req: Request, res: Response) => {
         res.status(200).send('OK');
